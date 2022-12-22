@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>大喜利にんじん</title>
+    <link rel="stylesheet" href="{% static 'css/title.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/background.css' %}">
+    <style>
+        .target{
+                pointer-events: none;
+        }
+        </style>
+</head>
+<body>
+    <header class="header">
+      <div class="nav">
+        <input id="drawer_input" class="drawer_hidden" type="checkbox">
+        <label for="drawer_input" class="drawer_open"><span></span></label>
+        <nav class="nav_content">
+            <a class="menu">menu</a><hr>
+              <ul class="nav_list">
+                  {% if user.is_authenticated %}
+                  <!-- ログイン中のメニュー -->
+                <li class="nav_item"><a href="{% url 'Ogiri:answer_category' %}">お題を見る</a></li><hr>
+                <li class="nav_item"><a href="{% url 'Ogiri:thema_category' %}">お題を投稿</a></li><hr>
+                <li class="nav_item"><a href="{% url 'accounts:logout' %}">ログアウト</a> </li><hr>
+
+                  {% else %}
+                  <li class="nav_item"><a href="{% url 'Ogiri:answer_category' %}">お題を見る</a></li><hr>
+                  <li class="nav_item"><a href="#">お題を投稿</a></li><hr>
+                  <li class="nav_item"><a href="{% url 'accounts:login' %}">ログイン・新規登録</a> </li><hr>
+                  {% endif %}
+              </ul>
+
+
+        </nav>
+      </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col offset-2">
+                <!--ファイルをアップロードする場合は
+                    enctype="multipart/fomr-data”が必要 -->
+                <form method="POST"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <th>カテゴリ</th>
+                            <td style="pointer-events: none;">{{ form.category }}</td>
+                        </tr>
+                        <tr>
+                            <th>お題を入力してください</th>
+                            <td>{{ form.title }}</td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <button type="submit">投稿する</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </header>
+</body>
